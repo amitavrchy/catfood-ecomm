@@ -3,16 +3,17 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Shop() {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState("");
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [priceRange, setPriceRange] = useState([0, 100000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cart, setCart] = useState([]);
-    const [orderDetails, setOrderDetails] = useState({ name: "", address: "", phone:"", paymentMethod: "Cash On Delivery" });
+    const [orderDetails, setOrderDetails] = useState({ name: "", address: "", phone: "", paymentMethod: "Cash On Delivery" });
 
     useEffect(() => {
         async function fetchProducts() {
@@ -30,19 +31,22 @@ export default function Shop() {
     }, []);
 
     const handleCategoryChange = (category) => {
-        setSelectedCategories((prev) =>
-            prev.includes(category)
-                ? prev.filter((c) => c !== category)
+        setSelectedCategories((prev) => 
+            prev.includes(category) 
+                ? prev.filter((c) => c !== category) 
                 : [...prev, category]
         );
     };
-
+    
     const filterProducts = () => {
         let filtered = products;
-        if (selectedCategories) {
-            filtered = filtered.filter((p) => p.category === selectedCategories);
+    
+        if (selectedCategories.length > 0) { // Fix category filtering
+            filtered = filtered.filter((p) => selectedCategories.includes(p.category));
         }
+    
         filtered = filtered.filter((p) => p.salePrice >= priceRange[0] && p.salePrice <= priceRange[1]);
+    
         setFilteredProducts(filtered);
     };
 
@@ -55,6 +59,12 @@ export default function Shop() {
     };
 
     const handleOrderSubmit = async () => {
+        const input = document.getElementById("instantOrder");
+        if (!input.value.trim()) {
+            alert("প্রয়োজনীয় তথ্য প্রদান করুন!");
+            input.focus();
+            return
+        }
         const orderData = {
             product: selectedProduct,
             customer: orderDetails,
@@ -69,19 +79,21 @@ export default function Shop() {
                 body: JSON.stringify(orderData),
             });
             if (res.ok) {
-                alert("Order placed successfully!");
+                toast.success("Order placed successfully!");
                 setSelectedProduct(null);
             } else {
-                alert("Failed to place order.");
+                toast.error("Failed to place order.");
             }
         } catch (error) {
             console.error("Error placing order:", error);
+            toast.error("An error occurred while placing the order.");
         }
     };
 
     return (
         <>
             <Navbar />
+            <Toaster />
             <div className="flex">
                 {/* Sidebar Filters */}
                 <div className="w-1/4 p-5 bg-gray-100 min-h-screen rounded-md shadow-md mt-10">
@@ -163,9 +175,9 @@ export default function Shop() {
                             <p className="text-gray-700"><span className="text-gray-800 font-bold">পণ্য:</span> {selectedProduct.name}</p>
                             <p className="text-gray-700"><span className="text-gray-800 font-bold">মূল্য:</span> BDT {selectedProduct.salePrice || selectedProduct.regularPrice}</p>
                             <p className="text-gray-700"><span className="text-gray-800 font-bold">ডেলিভারি মেথোড:</span> ক্যাশ অন ডেলিভারি</p>
-                            <input type="text" placeholder="আপনার নাম" className="input input-bordered w-full mt-4 p-2 outline-0 bg-white rounded-xl" onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })} />
-                            <input type="text" placeholder="আপনার ঠিকানা" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })} />
-                            <input type="text" placeholder="আপনার ফোন নাম্বার" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })} />
+                            <input id="instantOrder" type="text" placeholder="আপনার নাম" className="input input-bordered w-full mt-4 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })} />
+                            <input id="instantOrder" type="text" placeholder="আপনার ঠিকানা" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })} />
+                            <input id="instantOrder" type="text" placeholder="আপনার ফোন নাম্বার" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })} />
                             <div className="flex justify-between gap-3">
                                 <button onClick={handleOrderSubmit} className="w-full mt-4 p-2 rounded-xl bg-white cursor-pointer text-blue-500 font-bold">অর্ডার দিন</button>
                                 <button onClick={() => setSelectedProduct(null)} className="w-full mt-4 p-2 rounded-xl bg-white cursor-pointer text-red-500 font-bold">বাদ দিন</button>
