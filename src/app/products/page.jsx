@@ -31,22 +31,22 @@ export default function Shop() {
     }, []);
 
     const handleCategoryChange = (category) => {
-        setSelectedCategories((prev) => 
-            prev.includes(category) 
-                ? prev.filter((c) => c !== category) 
+        setSelectedCategories((prev) =>
+            prev.includes(category)
+                ? prev.filter((c) => c !== category)
                 : [...prev, category]
         );
     };
-    
+
     const filterProducts = () => {
         let filtered = products;
-    
+
         if (selectedCategories.length > 0) { // Fix category filtering
             filtered = filtered.filter((p) => selectedCategories.includes(p.category));
         }
-    
+
         filtered = filtered.filter((p) => p.salePrice >= priceRange[0] && p.salePrice <= priceRange[1]);
-    
+
         setFilteredProducts(filtered);
     };
 
@@ -148,12 +148,14 @@ export default function Shop() {
                     {filteredProducts.map((product) => (
                         <div key={product._id} className="card bg-base-100 shadow-xl p-5">
                             <figure>
-                                <Link href={`/product/${product._id}`}>
+                                <Link href={`/products/${product._id}`}>
                                     <img src={product.imageUrl || "/placeholder.png"} alt={product.name} className="h-48 w-full object-cover" />
                                 </Link>
                             </figure>
                             <div className="card-body">
-                                <h2 className="text-gray-700 font-bold text-lg">{product.name}</h2>
+                                <Link href={`/products/${product._id}`}>
+                                    <h2 className="text-gray-700 font-bold text-lg">{product.name}</h2>
+                                </Link>
                                 <p className="text-lg font-semibold text-red-500">BDT {product.salePrice || product.regularPrice}</p>
                                 {product.salePrice && (
                                     <p className="text-sm text-gray-500 line-through">BDT {product.regularPrice}</p>

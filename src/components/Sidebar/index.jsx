@@ -1,7 +1,8 @@
 "use client"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBox, FaShoppingCart, FaUsers, FaUserShield, FaTachometerAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaBox, FaShoppingCart, FaUsers, FaUserShield, FaTruck, FaTags, FaMoneyCheckAlt, FaHistory } from "react-icons/fa";
+
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -12,10 +13,15 @@ export default function Sidebar() {
     { name: "Orders", href: "/dashboard/orders", icon: <FaShoppingCart /> },
     { name: "Customers", href: "/dashboard/customers", icon: <FaUsers /> },
     { name: "Users", href: "/dashboard/users", icon: <FaUserShield /> },
-  ];
+    { name: "Shipping", href: "/dashboard/shipping", icon: <FaTruck /> },
+    { name: "Coupons", href: "/dashboard/coupon", icon: <FaTags /> },
+    { name: "Transactions", href: "/dashboard/transaction", icon: <FaMoneyCheckAlt /> },
+    { name: "Purchase History", href: "/dashboard/purchase", icon: <FaHistory /> },
+    { name: "Settings", href: "/dashboard/settings", icon: <FaHistory /> },
+];
 
   return (
-    <div className="w-72 bg-gray-900 text-white h-screen p-6 flex flex-col">
+    <div className="fixed left-0 top-0 h-screen w-72 bg-gray-900 text-white p-6 flex flex-col">
       {/* Branding */}
       <h1 className="text-2xl font-bold text-center mb-6">Admin Dashboard</h1>
 
