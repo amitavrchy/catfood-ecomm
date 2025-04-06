@@ -32,7 +32,7 @@ export default function CheckoutPage() {
     useEffect(() => {
         const storedOrder = JSON.parse(localStorage.getItem("checkoutData"));
         if (!storedOrder) {
-            router.push("/");
+            router.push("/"); // Redirect if no order data
         } else {
             setOrderDetails(storedOrder);
         }
@@ -47,10 +47,12 @@ export default function CheckoutPage() {
         }
     };
 
-    const totalPrice = orderDetails
-        ? (orderDetails.product.salePrice
-            ? orderDetails.product.salePrice * orderDetails.quantity
-            : orderDetails.product.regularPrice * orderDetails.quantity) + shippingFee
+    // Calculate total price for single or multiple products
+    const totalPrice = orderDetails && orderDetails.products
+        ? orderDetails.products.reduce((sum, product) => {
+            const price = Number(product.salePrice) || Number(product.regularPrice) || 0;
+            return sum + (price * product.quantity);
+        }, 0) + shippingFee
         : 0;
 
     const handleOrderSubmit = async (e) => {
@@ -59,17 +61,17 @@ export default function CheckoutPage() {
         if (!orderDetails) return alert("No product selected for checkout.");
 
         const newOrder = {
-            product: {
-                name: orderDetails.product.name, // ✅ Fixed
-                imageUrl: orderDetails.product.imageUrl || "/placeholder.png", // ✅ Fixed
-            },
-            variations: orderDetails.variations, // ✅ Fixed
-            quantity: orderDetails.quantity,
-            totalPrice: totalPrice, // ✅ Use computed totalPrice
-            shippingFee: shippingFee, // ✅ Use updated shippingFee
+            products: orderDetails.products.map((product) => ({
+                name: product.name,
+                imageUrl: product.imageUrl || "/placeholder.png",
+                variations: product.variations,
+                quantity: product.quantity || 1,
+                totalPrice: (product.salePrice || product.regularPrice) * (product.quantity || 1), // Fix the totalPrice calculation
+            })),
+            totalPrice,
+            shippingFee,
             shipping: shippingInfo,
         };
-        
 
         try {
             const res = await fetch("/api/order", {
@@ -95,7 +97,7 @@ export default function CheckoutPage() {
         }
     };
 
-    if (!orderDetails) return <p className="text-center">Loading...</p>;
+    if (!orderDetails || !orderDetails.products) return <p className="text-center">Loading...</p>;
 
     return (
         <>
@@ -110,44 +112,40 @@ export default function CheckoutPage() {
 
                         <div>
                             {/* Product Image */}
-                            <img
-                                src={orderDetails.product.imageUrl || "/placeholder.png"}
-                                alt={orderDetails.product.name}
-                                className="w-64 h-64 rounded-lg object-cover border border-gray-300"
-                            />
+                            {orderDetails.products.map((product, index) => (
+                                <div key={index} className="flex mt-10 mb-10">
+                                    <img
+                                        src={product.imageUrl || "/placeholder.png"}
+                                        alt={product.name}
+                                        className="w-16 h-16 rounded-lg object-cover"
+                                    />
+                                    <div>
+                                        <p className="text-lg font-semibold text-gray-900 ml-5">{product.name}</p>
+                                        <p className="text-gray-700 font-medium ml-5">পরিমাণ: <span className="text-gray-900">{product.quantity || 1}</span></p>
+                                    </div>
+                                </div>
+                            ))}
 
-                            {/* Order Details */}
-                            <div className="flex-1">
-                                <p className="text-lg font-semibold text-gray-900">{orderDetails.product.name}</p>
+                            <p className="text-gray-700 font-medium">
+                                শিপিং চার্জ: <span className="text-gray-900">{shippingFee} BDT</span>
+                            </p>
 
-                                {orderDetails.variations && Object.entries(orderDetails.variations).map(([key, value]) => (
-                                    <p key={key} className="text-gray-600 text-sm">
-                                        <span className="font-medium text-gray-800">{key}:</span> {value}
-                                    </p>
-                                ))}
-
-                                <p className="text-gray-700 font-medium mt-2">পরিমাণ: <span className="text-gray-900">{orderDetails.quantity}</span></p>
-
-                                <p className="text-gray-700 font-medium">
-                                    শিপিং চার্জ: <span className="text-gray-900">{shippingFee} BDT</span>
+                            <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-500 rounded-md">
+                                <p className="text-xl font-bold text-red-600">
+                                    মোট: {totalPrice} BDT
                                 </p>
+                            </div>
 
-                                <div className="mt-4 p-3 bg-red-50 border-l-4 border-red-500 rounded-md">
-                                    <p className="text-xl font-bold text-red-600">
-                                        মোট: {totalPrice} BDT
-                                    </p>
-                                </div>
-
-                                {/* Payment Method */}
-                                <div className="mt-6 p-3 bg-gray-100 rounded-lg flex items-center gap-3">
-                                    <span className="text-gray-700 font-medium">পেমেন্ট মেথড:</span>
-                                    <span className="px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-md">
-                                        ক্যাশ অন ডেলিভারি
-                                    </span>
-                                </div>
+                            {/* Payment Method */}
+                            <div className="mt-6 p-3 bg-gray-100 rounded-lg flex items-center gap-3">
+                                <span className="text-gray-700 font-medium">পেমেন্ট মেথড:</span>
+                                <span className="px-3 py-1 bg-green-500 text-white text-sm font-semibold rounded-md">
+                                    ক্যাশ অন ডেলিভারি
+                                </span>
                             </div>
                         </div>
                     </div>
+
                     {/* Shipping Details */}
                     <div className="bg-white shadow-md rounded-lg p-6">
                         <h2 className="text-xl font-semibold mb-4">শিপিং ডিটেইলস</h2>
@@ -203,6 +201,7 @@ export default function CheckoutPage() {
                                     value={shippingInfo.district}
                                     onChange={handleInputChange}
                                     className="border p-2 rounded-md w-full"
+                                    required
                                 >
                                     {districts.map((district) => (
                                         <option key={district} value={district}>
@@ -219,21 +218,24 @@ export default function CheckoutPage() {
                                     value={shippingInfo.zip}
                                     onChange={handleInputChange}
                                     className="border p-2 rounded-md w-full"
+                                    required
                                 />
+                            </div>
+
+                            {/* Submit Button */}
+                            <div className="flex justify-center mt-6">
+                                <button
+                                    type="submit"
+                                    className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                    onClick={handleOrderSubmit}
+                                    disabled={loading}
+                                >
+                                    {loading ? "Processing..." : "Place Order"}
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
-
-                {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-
-                <button
-                    onClick={handleOrderSubmit}
-                    className={`mt-6 w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-all ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-                    disabled={loading}
-                >
-                    {loading ? "অর্ডার নেয়া হচ্ছে..." : "অর্ডার করুন"}
-                </button>
             </div>
             <Footer />
         </>

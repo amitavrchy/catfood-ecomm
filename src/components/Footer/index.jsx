@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-gray-200">
         {/* Logo & About */}
         <div>
-          <Link href="/" className="text-2xl font-bold text-primary">
+          <Link href="/" className="text-2xl font-bold text-gray-100">
             ই-শপ
           </Link>
           <p className="mt-2 text-sm text-gray-400 w-2/3">

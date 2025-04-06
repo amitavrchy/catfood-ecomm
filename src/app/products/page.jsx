@@ -1,15 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import toast, { Toaster } from "react-hot-toast";
+import { useCart } from "@/utils/CartContext";
 
 export default function Shop() {
+    const { addToCart } = useCart();
+    const searchParams = useSearchParams();
+    const initialCategory = searchParams.get("category"); // Get the category from URL
+
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState(initialCategory ? [initialCategory] : []);
     const [priceRange, setPriceRange] = useState([0, 100000]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cart, setCart] = useState([]);
@@ -21,50 +27,54 @@ export default function Shop() {
                 const res = await fetch("/api/products");
                 const data = await res.json();
                 setProducts(data.products);
-                setFilteredProducts(data.products);
                 setCategories([...new Set(data.products.map((product) => product.category))]);
+
+                // Initial filtering
+                let filtered = data.products;
+                if (initialCategory) {
+                    filtered = filtered.filter(p => p.category === initialCategory);
+                }
+                setFilteredProducts(filtered);
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
         }
         fetchProducts();
-    }, []);
+    }, [initialCategory]);
 
     const handleCategoryChange = (category) => {
-        setSelectedCategories((prev) =>
-            prev.includes(category)
-                ? prev.filter((c) => c !== category)
-                : [...prev, category]
-        );
+        const updated = selectedCategories.includes(category)
+            ? selectedCategories.filter((c) => c !== category)
+            : [...selectedCategories, category];
+        setSelectedCategories(updated);
     };
+
+    useEffect(() => {
+        filterProducts();
+    }, [selectedCategories, priceRange]);
 
     const filterProducts = () => {
         let filtered = products;
 
-        if (selectedCategories.length > 0) { // Fix category filtering
+        if (selectedCategories.length > 0) {
             filtered = filtered.filter((p) => selectedCategories.includes(p.category));
         }
 
         filtered = filtered.filter((p) => p.salePrice >= priceRange[0] && p.salePrice <= priceRange[1]);
-
         setFilteredProducts(filtered);
     };
-
-    const addToCart = (product) => {
-        setCart([...cart, product]);
-    };
-
-    const openCheckoutModal = (product) => {
-        setSelectedProduct(product);
-    };
+    const openCheckoutModal = (product) => setSelectedProduct(product);
 
     const handleOrderSubmit = async () => {
-        const input = document.getElementById("instantOrder");
-        if (!input.value.trim()) {
-            alert("প্রয়োজনীয় তথ্য প্রদান করুন!");
-            input.focus();
-            return
+        const inputs = document.querySelectorAll("#instantOrder");
+        for (let input of inputs) {
+            if (!input.value.trim()) {
+                alert("প্রয়োজনীয় তথ্য প্রদান করুন!");
+                input.focus();
+                return;
+            }
         }
+
         const orderData = {
             product: selectedProduct,
             customer: orderDetails,
@@ -73,9 +83,7 @@ export default function Shop() {
         try {
             const res = await fetch("/api/order", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(orderData),
             });
             if (res.ok) {
@@ -134,7 +142,6 @@ export default function Shop() {
                         />
                     </div>
 
-                    {/* Apply Filters Button */}
                     <button
                         onClick={filterProducts}
                         className="btn btn-primary w-full text-lg font-semibold py-3 bg-gray-400 shadow-md hover:bg-primary-dark transition-all cursor-pointer"
@@ -144,7 +151,7 @@ export default function Shop() {
                 </div>
 
                 {/* Product Grid */}
-                <div className="w-3/4 p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="w-3/4 p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {filteredProducts.map((product) => (
                         <div key={product._id} className="card bg-base-100 shadow-xl p-5">
                             <figure>
@@ -161,7 +168,12 @@ export default function Shop() {
                                     <p className="text-sm text-gray-500 line-through">BDT {product.regularPrice}</p>
                                 )}
                                 <div className="flex card-actions justify-between mt-5 text-gray-700">
-                                    <button onClick={() => addToCart(product)} className="btn btn-secondary cursor-pointer"> <span className="font-bold text-gray-900">🛒</span>কার্টে নিন</button>
+                                    <button onClick={() => {
+                                        addToCart(product)
+                                        toast.success("Product Added to Cart");
+                                    }} className="btn btn-secondary cursor-pointer">
+                                        <span className="font-bold text-gray-900">🛒</span>কার্টে নিন
+                                    </button>
                                     <button onClick={() => openCheckoutModal(product)} className="btn btn-primary border-2 py-1 cursor-pointer px-3 rounded-xl hover:text-gray-900">এখনি কিনুন</button>
                                 </div>
                             </div>
@@ -177,9 +189,9 @@ export default function Shop() {
                             <p className="text-gray-700"><span className="text-gray-800 font-bold">পণ্য:</span> {selectedProduct.name}</p>
                             <p className="text-gray-700"><span className="text-gray-800 font-bold">মূল্য:</span> BDT {selectedProduct.salePrice || selectedProduct.regularPrice}</p>
                             <p className="text-gray-700"><span className="text-gray-800 font-bold">ডেলিভারি মেথোড:</span> ক্যাশ অন ডেলিভারি</p>
-                            <input id="instantOrder" type="text" placeholder="আপনার নাম" className="input input-bordered w-full mt-4 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })} />
-                            <input id="instantOrder" type="text" placeholder="আপনার ঠিকানা" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })} />
-                            <input id="instantOrder" type="text" placeholder="আপনার ফোন নাম্বার" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })} />
+                            <input id="instantOrder" type="text" placeholder="আপনার নাম" className="input input-bordered w-full mt-4 p-2 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })} />
+                            <input id="instantOrder" type="text" placeholder="আপনার ঠিকানা" className="input input-bordered w-full mt-2 p-2 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })} />
+                            <input id="instantOrder" type="text" placeholder="আপনার ফোন নাম্বার" className="input input-bordered w-full mt-2 p-2 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })} />
                             <div className="flex justify-between gap-3">
                                 <button onClick={handleOrderSubmit} className="w-full mt-4 p-2 rounded-xl bg-white cursor-pointer text-blue-500 font-bold">অর্ডার দিন</button>
                                 <button onClick={() => setSelectedProduct(null)} className="w-full mt-4 p-2 rounded-xl bg-white cursor-pointer text-red-500 font-bold">বাদ দিন</button>

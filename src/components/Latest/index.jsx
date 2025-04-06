@@ -2,8 +2,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast, Toaster } from "react-hot-toast";
+import { useCart } from "@/utils/CartContext";
 
 export default function LatestProducts() {
+    const { addToCart } = useCart();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [cart, setCart] = useState([]);
@@ -19,12 +21,6 @@ export default function LatestProducts() {
             })
             .catch((err) => console.error("Error fetching products:", err));
     }, []);
-
-    const addToCart = (product) => {
-        setCart([...cart, product]);
-        toast.success("কার্টে যুক্ত করা হয়েছে!");
-    };
-
     const handleOrderSubmit = async () => {
         if (!orderDetails.name.trim() || !orderDetails.address.trim() || !orderDetails.phone.trim()) {
             alert("প্রয়োজনীয় তথ্য প্রদান করুন!");
@@ -60,8 +56,8 @@ export default function LatestProducts() {
         <section className="py-12 bg-gray-50 w-full">
             <Toaster />
             <div className="container mx-auto px-4">
-                <h2 className="text-4xl text-center text-gray-800 mb-2"> <span className="font-bold">Latest </span>Products</h2>
-                <p className="text-xl text-gray-600 text-center">Check out our latest product and get updated!</p>
+                <h2 className="text-4xl text-center text-gray-800 mb-2"> <span className="font-bold">নতুন </span>কালেকশন</h2>
+                <p className="text-xl text-gray-600 text-center">আমাদের লেটেস্ট পণ্যগুলি দেখুন</p>
                 <div className="w-full p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
                     {loading
                         ? Array.from({ length: 4 }).map((_, index) => (
@@ -82,10 +78,24 @@ export default function LatestProducts() {
                                     {product.salePrice && (
                                         <p className="text-sm text-gray-500 line-through">BDT {product.regularPrice}</p>
                                     )}
-                                    <div className="flex card-actions justify-between mt-5 text-gray-700">
-                                        <button onClick={() => addToCart(product)} className="btn btn-secondary cursor-pointer"> <span className="font-bold text-gray-900">🛒</span>কার্টে নিন</button>
-                                        <button onClick={() => setSelectedProduct(product)} className="btn btn-primary border-2 py-1 cursor-pointer px-3 rounded-xl hover:text-gray-900">এখনি কিনুন</button>
+                                    <div className="flex gap-2 card-actions justify-between mt-5 text-gray-700">
+                                        <button
+                                            onClick={() => {
+                                                addToCart(product);
+                                                toast.success("Product Added to Cart");
+                                            }}
+                                            className="flex-1 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 text-sm"
+                                        >
+                                            <span className="font-bold">🛒</span> কার্টে নিন
+                                        </button>
+                                        <button
+                                            onClick={() => setSelectedProduct(product)}
+                                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                                        >
+                                            এখনি কিনুন
+                                        </button>
                                     </div>
+
                                 </div>
                             </div>
                         ))}

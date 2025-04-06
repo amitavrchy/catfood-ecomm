@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaTachometerAlt, FaBox, FaShoppingCart, FaUsers, FaUserShield, FaTruck, FaTags, FaMoneyCheckAlt, FaHistory } from "react-icons/fa";
+import { FaTachometerAlt, FaBox, FaShoppingCart, FaUsers, FaUserShield, FaTruck, FaTags, FaMoneyCheckAlt, FaHistory, FaCog } from "react-icons/fa";
 
 
 export default function Sidebar() {
@@ -9,6 +9,7 @@ export default function Sidebar() {
 
   const menuItems = [
     { name: "Dashboard", href: "/dashboard", icon: <FaTachometerAlt /> },
+    { name: "Category", href: "/dashboard/category", icon: <FaBox /> },
     { name: "Products", href: "/dashboard/products", icon: <FaBox /> },
     { name: "Orders", href: "/dashboard/orders", icon: <FaShoppingCart /> },
     { name: "Customers", href: "/dashboard/customers", icon: <FaUsers /> },
@@ -17,7 +18,7 @@ export default function Sidebar() {
     { name: "Coupons", href: "/dashboard/coupon", icon: <FaTags /> },
     { name: "Transactions", href: "/dashboard/transaction", icon: <FaMoneyCheckAlt /> },
     { name: "Purchase History", href: "/dashboard/purchase", icon: <FaHistory /> },
-    { name: "Settings", href: "/dashboard/settings", icon: <FaHistory /> },
+    { name: "Settings", href: "/dashboard/settings", icon: <FaCog /> },
 ];
 
   return (

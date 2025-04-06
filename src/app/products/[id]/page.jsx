@@ -4,13 +4,13 @@ import { useParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
-import { CartContext } from "@/utils/CartContext";
+import { useCart } from "@/utils/CartContext";
 import { Toaster, toast } from "react-hot-toast";
 
 export default function ProductPage() {
     const { id } = useParams();
     const router = useRouter();
-    const { addToCart } = useContext(CartContext);
+    const { addToCart } = useCart();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedVariations, setSelectedVariations] = useState({});
