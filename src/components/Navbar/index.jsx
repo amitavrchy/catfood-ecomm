@@ -16,18 +16,16 @@ export default function Navbar() {
     const [searchTerm, setSearchTerm] = useState('');
     const [products, setProducts] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
-    const [cartItemCount, setCartItemCount] = useState(0); // state for cart item count
+    const [cartItemCount, setCartItemCount] = useState(0);
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
-        // Fetch products once
         fetch('/api/products')
             .then(res => res.json())
             .then(data => setProducts(data.products || []))
             .catch(err => console.error("Error loading products", err));
 
-        // Get cart items from localStorage and calculate the total quantity
         const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
         const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
         setCartItemCount(totalItems);
@@ -45,14 +43,14 @@ export default function Navbar() {
     }, [searchTerm, products]);
 
     return (
-        <nav className="bg-white shadow-md p-4 sticky top-0 z-50">
-            <div className="container mx-auto flex justify-between items-center relative">
+        <nav className="bg-white shadow-md sticky top-0 z-50 w-full">
+            <div className="container mx-auto px-4 py-3 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="text-2xl font-bold text-primary">ই-শপ</Link>
+                <Link href="/" className="text-2xl font-bold text-primary">Lixci</Link>
 
                 {/* Search Bar */}
-                <div className="hidden md:flex items-center relative">
-                    <div className="bg-gray-200 p-2 rounded-full w-152">
+                <div className="relative">
+                    <div className="bg-gray-200 p-2 rounded-full w-[250px] md:w-[600px]">
                         <input
                             type="text"
                             value={searchTerm}
@@ -60,13 +58,11 @@ export default function Navbar() {
                             onFocus={() => setIsSearchFocused(true)}
                             onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                             placeholder="পণ্য খুজুন..."
-                            className="bg-transparent outline-none flex-1 px-2 text-black w-full"
+                            className="bg-transparent outline-none px-2 text-black w-full"
                         />
                     </div>
-
-                    {/* Search Results Dropdown */}
                     {isSearchFocused && searchResults.length > 0 && (
-                        <div className="absolute top-14 left-0 bg-white shadow-lg rounded-lg w-72 max-h-80 overflow-y-auto z-50">
+                        <div className="absolute top-full left-0 bg-white shadow-lg rounded-lg w-full max-h-80 overflow-y-auto z-50">
                             {searchResults.map(product => (
                                 <Link
                                     key={product._id}
@@ -87,10 +83,10 @@ export default function Navbar() {
                         <Link
                             key={index}
                             href={menu.url}
-                            className={`relative transition duration-300 hover:text-gray-700 
-                                    after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px] 
-                                    after:w-full after:bg-gray-700 after:scale-x-0 after:origin-left 
-                                    after:transition-transform after:duration-300 hover:after:scale-x-100`}
+                            className={`relative transition duration-300 hover:text-gray-700
+                            after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:h-[2px]
+                            after:w-full after:bg-gray-700 after:scale-x-0 after:origin-left
+                            after:transition-transform after:duration-300 hover:after:scale-x-100`}
                         >
                             {menu.name}
                         </Link>
@@ -98,7 +94,6 @@ export default function Navbar() {
 
                     <Link href="/cart" className="relative hover:scale-110 transition-transform duration-300">
                         <ShoppingCart className="w-6 h-6" />
-                        {/* Cart Item Count Badge */}
                         {cartItemCount > 0 && (
                             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                                 {cartItemCount}
@@ -110,26 +105,36 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu Toggle */}
                 <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
                     <Menu className="w-6 h-6" />
                 </button>
             </div>
 
             {/* Mobile Menu */}
-            {isOpen && (
-                <div className="md:hidden bg-white p-4 space-y-4 shadow-md absolute w-full left-0 top-full">
+            <div className={`md:hidden transition-all duration-300 ease-in-out bg-white shadow-md ${isOpen ? "block" : "hidden"}`}>
+                <div className="px-4 py-3 space-y-3">
                     {menus.map((menu, index) => (
-                        <Link key={index} href={menu.url} className="block">{menu.name}</Link>
+                        <Link key={index} href={menu.url} className="block text-gray-800 font-medium">
+                            {menu.name}
+                        </Link>
                     ))}
-                    <Link href="/cart" className="flex items-center justify-between">
-                        Cart <ShoppingCart className="w-6 h-6" />
-                    </Link>
-                    <Link href="/account" className="flex items-center justify-between">
-                        Account <User className="w-6 h-6" />
-                    </Link>
+
+                    <div className="flex items-center justify-between pt-2 border-t">
+                        <Link href="/cart" className="flex items-center gap-2">
+                            <ShoppingCart className="w-6 h-6" />
+                            {cartItemCount > 0 && (
+                                <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                                    {cartItemCount}
+                                </span>
+                            )}
+                        </Link>
+                        <Link href="/account">
+                            <User className="w-6 h-6" />
+                        </Link>
+                    </div>
                 </div>
-            )}
+            </div>
         </nav>
     );
 }

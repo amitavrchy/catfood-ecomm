@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 
 const initialCustomers = [
   { id: 1, name: "John Doe", email: "john@example.com", phone: "+88012345678", status: "Active", registered: "2024-02-01" },
@@ -102,13 +101,20 @@ export default function AdminCustomerPage() {
                       onClick={() => handleEditClick(customer)}
                       className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaEdit /> Edit
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11 3h2v18h-2z"></path>
+                        <path d="M3 11h18v2H3z"></path>
+                      </svg>
+                      Edit
                     </button>
                     <button
                       onClick={() => deleteCustomer(customer.id)}
                       className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaTrash /> Delete
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 7L12 14l-7-7" />
+                      </svg>
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -127,7 +133,9 @@ export default function AdminCustomerPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Edit Customer</h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <FaTimes />
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
 

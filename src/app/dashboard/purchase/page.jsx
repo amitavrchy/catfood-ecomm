@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaSearch, FaEye, FaTrash, FaTimes } from "react-icons/fa";
 
 const initialPurchases = [
   { id: 1, user: "John Doe", total: 3200.00, items: ["Laptop", "Mouse"], date: "2024-04-08" },
@@ -120,15 +119,15 @@ export default function AdminPurchaseHistoryPage() {
                   <td className="p-3 border flex gap-3">
                     <button
                       onClick={() => handleViewClick(purchase)}
-                      className="px-3 py-2 bg-blue-500 text-white rounded-md flex items-center gap-2"
+                      className="px-3 py-2 bg-blue-500 text-white rounded-md"
                     >
-                      <FaEye /> View
+                      View
                     </button>
                     <button
                       onClick={() => deletePurchase(purchase.id)}
-                      className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
+                      className="px-3 py-2 bg-red-600 text-white rounded-md"
                     >
-                      <FaTrash /> Delete
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -147,7 +146,7 @@ export default function AdminPurchaseHistoryPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Purchase Details</h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <FaTimes />
+                Close
               </button>
             </div>
 

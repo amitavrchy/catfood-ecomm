@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEdit, FaTrash, FaMoneyBillWave, FaTimes } from "react-icons/fa";
 
 const initialTransactions = [
   { id: 1, user: "John Doe", amount: "BDT 3200.00", method: "Credit Card", status: "Completed", date: "2024-04-08" },
@@ -107,13 +106,17 @@ export default function AdminTransactionPage() {
                       onClick={() => handleEditClick(transaction)}
                       className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaEdit /> Edit
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 4h4M12 4h1M5 4h1M7 7l10 10-1.5 1.5L7 8.5z"/>
+                      </svg> Edit
                     </button>
                     <button
                       onClick={() => deleteTransaction(transaction.id)}
                       className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaTrash /> Delete
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                      </svg> Delete
                     </button>
                   </td>
                 </tr>
@@ -132,7 +135,9 @@ export default function AdminTransactionPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Edit Transaction</h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <FaTimes />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
               </button>
             </div>
 

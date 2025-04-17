@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { FaUserShield, FaLock, FaBell, FaCog, FaMoon, FaSun } from "react-icons/fa";
 
 export default function AdminSettingsPage() {
   const [theme, setTheme] = useState("light");
@@ -16,7 +15,7 @@ export default function AdminSettingsPage() {
 
       {/* Account Settings */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-md mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2"><FaUserShield /> Account Settings</h3>
+        <h3 className="text-xl font-bold flex items-center gap-2">Account Settings</h3>
         <div className="mt-4 space-y-4">
           <label className="block font-medium">Admin Name</label>
           <input type="text" placeholder="Enter name" className="w-full p-3 border rounded-md" />
@@ -30,7 +29,7 @@ export default function AdminSettingsPage() {
 
       {/* Security Settings */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-md mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2"><FaLock /> Security Settings</h3>
+        <h3 className="text-xl font-bold flex items-center gap-2">Security Settings</h3>
         <div className="mt-4">
           <label className="flex items-center gap-3">
             <input type="checkbox" checked={twoFactorAuth} onChange={() => setTwoFactorAuth(!twoFactorAuth)} />
@@ -42,7 +41,7 @@ export default function AdminSettingsPage() {
 
       {/* Notification Preferences */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-md mb-6">
-        <h3 className="text-xl font-bold flex items-center gap-2"><FaBell /> Notification Preferences</h3>
+        <h3 className="text-xl font-bold flex items-center gap-2">Notification Preferences</h3>
         <div className="mt-4">
           <label className="flex items-center gap-3">
             <input type="checkbox" checked={notifications} onChange={() => setNotifications(!notifications)} />
@@ -54,7 +53,7 @@ export default function AdminSettingsPage() {
 
       {/* System Settings */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-md">
-        <h3 className="text-xl font-bold flex items-center gap-2"><FaCog /> System Settings</h3>
+        <h3 className="text-xl font-bold flex items-center gap-2">System Settings</h3>
         <div className="mt-4 space-y-4">
           <label className="block font-medium">Language</label>
           <select className="w-full p-3 border rounded-md">
@@ -69,10 +68,10 @@ export default function AdminSettingsPage() {
           <label className="block font-medium">Theme</label>
           <div className="flex gap-4">
             <button onClick={() => setTheme("light")} className={`px-6 py-3 rounded-md flex items-center gap-2 ${theme === "light" ? "bg-yellow-500 text-white" : "bg-gray-300"}`}>
-              <FaSun /> Light Mode
+              Light Mode
             </button>
             <button onClick={() => setTheme("dark")} className={`px-6 py-3 rounded-md flex items-center gap-2 ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-300"}`}>
-              <FaMoon /> Dark Mode
+              Dark Mode
             </button>
           </div>
         </div>

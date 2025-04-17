@@ -3,19 +3,23 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useCart } from "@/utils/CartContext";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Fix router issue
+import { useRouter } from "next/navigation";
 
 const Cart = () => {
     const router = useRouter();
     const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
     const [cartData, setCartData] = useState([]);
 
-    // Sync cartData with the live cart state & set default quantity
+    // Convert JSON data to objects and sync with live cart state
     useEffect(() => {
-        const updatedCart = cart.map((item) => ({
-            ...item,
-            quantity: item.quantity ?? 1, // Set default quantity to 1 if undefined
-        }));
+        const updatedCart = cart.map((item) => {
+            // Convert JSON string into object if necessary
+            const parsedItem = typeof item === "string" ? JSON.parse(item) : item;
+            return {
+                ...parsedItem,
+                quantity: parsedItem.quantity ?? 1, // Default to 1 if undefined
+            };
+        });
 
         setCartData(updatedCart);
         localStorage.setItem("cartData", JSON.stringify(updatedCart));
@@ -43,7 +47,7 @@ const Cart = () => {
             salePrice: Number(item.salePrice) || Number(item.regularPrice) || 0,
             quantity: item.quantity, // Ensure quantity is passed
             imageUrl: item.imageUrl,
-            variations: item.variations,
+            variations: typeof item.variations === "string" ? JSON.parse(item.variations) : item.variations,
         }));
 
         localStorage.setItem("checkoutData", JSON.stringify({ products: checkoutData }));
@@ -55,12 +59,12 @@ const Cart = () => {
             <Navbar />
             <div className="w-11/12 mx-auto p-6 bg-white shadow-lg rounded-lg">
                 <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Shopping Cart</h2>
-                {cart.length === 0 ? (
+                {cartData.length === 0 ? (
                     <p className="text-center text-gray-600 mt-4">Your cart is empty.</p>
                 ) : (
                     <div>
-                        {cart.map((item) => {
-                            const variations = JSON.parse(item.variations || "[]");
+                        {cartData.map((item) => {
+                            const variations = typeof item.variations === "string" ? JSON.parse(item.variations) : item.variations;
                             const price = Number(item.salePrice) || Number(item.regularPrice) || 0;
                             return (
                                 <div key={item._id} className="flex items-center border-b py-6 px-4">
@@ -76,10 +80,9 @@ const Cart = () => {
                                             <input
                                                 type="number"
                                                 value={item.quantity}
-                                                onChange={(e) => handleQuantityChange(item._id, e.target.value)}
+                                                onChange={(e) => handleQuantityChange(item._id, Math.max(1, e.target.value))}
                                                 className="w-16 text-center border rounded-md px-2 py-1"
                                                 min="1"
-                                                defaultValue="1"
                                             />
                                         </p>
                                     </div>

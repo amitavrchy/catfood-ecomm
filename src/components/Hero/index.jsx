@@ -36,7 +36,7 @@ const Hero = () => {
     }, []);
 
     return (
-        <div className="relative w-full h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden bg-gray-200">
+        <div className="relative w-full h-[500px] md:min-h-screen lg:min-h-screen flex items-center justify-center overflow-hidden bg-gray-200">
             {sliderItems.map((slide, index) => (
                 <div
                     key={slide.id}
@@ -45,14 +45,14 @@ const Hero = () => {
                 >
                     <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-6 md:px-12">
                         <div className="text-center md:text-left max-w-lg">
-                            <p className="mt-4 text-lg text-blue-600 animate__animated animate__fadeInLeft animate__delay-1s">
+                            <p className="mt-4 text-lg text-sky-700 animate__animated animate__fadeInLeft animate__delay-1s">
                                 {slide.title}
                             </p>
                             <h1 className="text-4xl md:text-5xl mt-2 mb-8 font-bold text-gray-700 animate__animated animate__fadeInLeft">
                                 {slide.description}
                             </h1>
-                            <div className="mt-6 flex gap-4 animate__animated animate__fadeInUp animate__delay-2s">
-                                <a href={slide.primaryBtnURL} className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <div className="mt-6 flex gap-4 animate__animated animate__fadeInUp animate__delay-2s justify-center md:justify-start lg:justify-start">
+                                <a href={slide.primaryBtnURL} className="px-6 py-3 bg-[#439DDF] text-white rounded-lg hover:bg-blue-700">
                                     {slide.primaryBtnName}
                                 </a>
                                 <a href={slide.secondaryBtnURL} className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700">

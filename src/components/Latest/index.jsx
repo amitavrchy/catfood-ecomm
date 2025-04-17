@@ -8,7 +8,6 @@ export default function LatestProducts() {
     const { addToCart } = useCart();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [cart, setCart] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [orderDetails, setOrderDetails] = useState({ name: "", address: "", phone: "" });
 
@@ -81,6 +80,7 @@ export default function LatestProducts() {
                                     <div className="flex gap-2 card-actions justify-between mt-5 text-gray-700">
                                         <button
                                             onClick={() => {
+                                                console.log(product)
                                                 addToCart(product);
                                                 toast.success("Product Added to Cart");
                                             }}
@@ -90,7 +90,7 @@ export default function LatestProducts() {
                                         </button>
                                         <button
                                             onClick={() => setSelectedProduct(product)}
-                                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                                            className="flex-1 px-4 py-2 bg-[#439DDF] text-white rounded hover:bg-blue-700 text-sm"
                                         >
                                             এখনি কিনুন
                                         </button>
@@ -103,18 +103,74 @@ export default function LatestProducts() {
             </div>
 
             {selectedProduct && (
-                <div className="fixed inset-0 flex justify-center items-center bg-opacity-50">
+                <div className="fixed inset-0 flex justify-center items-center bg-transparent bg-opacity-20 z-50">
                     <div className="bg-gray-100 p-6 rounded-lg shadow-lg w-96">
                         <h2 className="text-xl font-bold mb-4">অর্ডার দিন</h2>
-                        <p className="text-gray-700"><span className="text-gray-800 font-bold">পণ্য:</span> {selectedProduct.name}</p>
-                        <p className="text-gray-700"><span className="text-gray-800 font-bold">মূল্য:</span> BDT {selectedProduct.salePrice || selectedProduct.regularPrice}</p>
-                        <p className="text-gray-700"><span className="text-gray-800 font-bold">ডেলিভারি মেথোড:</span> ক্যাশ অন ডেলিভারি</p>
-                        <input type="text" placeholder="আপনার নাম" className="input input-bordered w-full mt-4 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })} />
-                        <input type="text" placeholder="আপনার ঠিকানা" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })} />
-                        <input type="text" placeholder="আপনার ফোন নাম্বার" className="input input-bordered w-full mt-2 p-2 outline-0 bg-white rounded-xl" required onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })} />
+                        <p className="text-gray-700">
+                            <span className="text-gray-800 font-bold">পণ্য:</span> {selectedProduct.name}
+                        </p>
+                        <p className="text-gray-700">
+                            <span className="text-gray-800 font-bold">মূল্য:</span> BDT {selectedProduct.salePrice || selectedProduct.regularPrice}
+                        </p>
+
+                        {/* Delivery charge display */}
+                        {orderDetails?.location === "ঢাকার ভিতরে" && (
+                            <p className="text-sm text-green-600 font-medium mt-1">ডেলিভারি চার্জঃ ৮০ টাকা</p>
+                        )}
+                        {orderDetails?.location === "ঢাকার বাইরে" && (
+                            <p className="text-sm text-red-600 font-medium mt-1">ডেলিভারি চার্জঃ ১৩০ টাকা</p>
+                        )}
+
+                        <p className="text-gray-700">
+                            <span className="text-gray-800 font-bold">ডেলিভারি মেথোড:</span> ক্যাশ অন ডেলিভারি
+                        </p>
+
+                        {/* Delivery location selector */}
+                        <input
+                            type="text"
+                            placeholder="আপনার নাম"
+                            className="input input-bordered w-full mt-3 p-2 bg-white rounded-xl"
+                            required
+                            onChange={(e) => setOrderDetails({ ...orderDetails, name: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="আপনার ঠিকানা"
+                            className="input input-bordered w-full mt-2 p-2 bg-white rounded-xl"
+                            required
+                            onChange={(e) => setOrderDetails({ ...orderDetails, address: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="আপনার ফোন নাম্বার"
+                            className="input input-bordered w-full mt-2 p-2 bg-white rounded-xl"
+                            required
+                            onChange={(e) => setOrderDetails({ ...orderDetails, phone: e.target.value })}
+                        />
+                        <select
+                            className="input input-bordered w-full mt-3 p-2 bg-white rounded-xl"
+                            required
+                            onChange={(e) => setOrderDetails({ ...orderDetails, location: e.target.value })}
+                            value={orderDetails?.location || ""}
+                        >
+                            <option value="">ডেলিভারি লোকেশন নির্বাচন করুন</option>
+                            <option value="ঢাকার ভিতরে">ঢাকার ভিতরে</option>
+                            <option value="ঢাকার বাইরে">ঢাকার বাইরে</option>
+                        </select>
+
                         <div className="flex justify-between gap-3">
-                            <button onClick={handleOrderSubmit} className="w-full mt-4 p-2 rounded-xl bg-blue-500 text-white cursor-pointer font-bold">অর্ডার দিন</button>
-                            <button onClick={() => setSelectedProduct(null)} className="w-full mt-4 p-2 rounded-xl bg-red-500 text-white cursor-pointer font-bold">বাদ দিন</button>
+                            <button
+                                onClick={handleOrderSubmit}
+                                className="w-full mt-4 p-2 rounded-xl bg-white cursor-pointer text-blue-500 font-bold"
+                            >
+                                অর্ডার দিন
+                            </button>
+                            <button
+                                onClick={() => setSelectedProduct(null)}
+                                className="w-full mt-4 p-2 rounded-xl bg-white cursor-pointer text-red-500 font-bold"
+                            >
+                                বাদ দিন
+                            </button>
                         </div>
                     </div>
                 </div>

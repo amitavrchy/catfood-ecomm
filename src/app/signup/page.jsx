@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import axios from "axios";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -119,7 +118,7 @@ const SignUp = () => {
               <p className="mt-6 text-center text-gray-700 text-lg">
                 Already have an account?{' '}
                 <Link href="/signIn" className="text-blue-500 hover:text-blue-700 flex items-center justify-center gap-1">
-                  Sign In <AiOutlineArrowRight />
+                  Sign In
                 </Link>
               </p>
             </div>

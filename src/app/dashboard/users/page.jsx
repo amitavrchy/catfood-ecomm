@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaUserShield, FaUser, FaUsers, FaEdit, FaTrash, FaPlus, FaTimes } from "react-icons/fa";
 
 const initialUsers = [
   { id: 1, name: "John Doe", email: "john@example.com", role: "Admin", status: "Active" },
@@ -79,7 +78,10 @@ export default function AdminUserPage() {
           onClick={handleAddUserClick}
           className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center gap-2"
         >
-          <FaPlus /> Add User
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add User
         </button>
       </div>
 
@@ -135,13 +137,19 @@ export default function AdminUserPage() {
                       onClick={() => handleEditClick(user)}
                       className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaEdit /> Edit
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 3l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                      Edit
                     </button>
                     <button
                       onClick={() => deleteUser(user.id)}
                       className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaTrash /> Delete
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Delete
                     </button>
                   </td>
                 </tr>

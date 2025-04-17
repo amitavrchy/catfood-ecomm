@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEdit, FaTrash, FaTruck, FaTimes } from "react-icons/fa";
 
 const initialShipments = [
   { id: 1, trackingId: "SHIP12345", carrier: "FedEx", status: "Shipped", estimatedDelivery: "2024-04-08" },
@@ -103,15 +102,15 @@ export default function AdminShippingPage() {
                   <td className="p-3 border flex gap-3">
                     <button
                       onClick={() => handleEditClick(shipment)}
-                      className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2"
+                      className="px-3 py-2 bg-yellow-500 text-white rounded-md"
                     >
-                      <FaEdit /> Edit
+                      Edit
                     </button>
                     <button
                       onClick={() => deleteShipment(shipment.id)}
-                      className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
+                      className="px-3 py-2 bg-red-600 text-white rounded-md"
                     >
-                      <FaTrash /> Delete
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -130,7 +129,7 @@ export default function AdminShippingPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Edit Shipment</h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <FaTimes />
+                Close
               </button>
             </div>
 

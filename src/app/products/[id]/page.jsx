@@ -1,26 +1,31 @@
 "use client";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/utils/CartContext";
 import { Toaster, toast } from "react-hot-toast";
 
 export default function ProductPage() {
     const { id } = useParams();
-    const router = useRouter();
     const { addToCart } = useCart();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedVariations, setSelectedVariations] = useState({});
     const [quantity, setQuantity] = useState(1);
-    const [activeTab, setActiveTab] = useState("reviews");
+    const [activeTab, setActiveTab] = useState("details");
     const [reviews, setReviews] = useState([
         { name: "John Doe", avatar: "/avatar.webp", review: "Great product!" },
         { name: "Jane Smith", avatar: "/avatar.webp", review: "Totally worth it." }
     ]);
     const [newReview, setNewReview] = useState("");
+
+    const [orderForm, setOrderForm] = useState({
+        name: "",
+        address: "",
+        phone: "",
+        deliveryLocation: ""
+    });
 
     useEffect(() => {
         async function fetchProduct() {
@@ -29,18 +34,17 @@ export default function ProductPage() {
                 const res = await fetch(`/api/products`);
                 const data = await res.json();
                 const matchedProduct = data.products.find((p) => p._id === id);
-                if (!matchedProduct) {
-                    console.error("Product not found");
-                } else {
+                if (matchedProduct) {
                     if (matchedProduct.variations) {
                         try {
                             matchedProduct.variations = JSON.parse(matchedProduct.variations);
-                        } catch (error) {
-                            console.error("Error parsing variations:", error);
+                        } catch {
                             matchedProduct.variations = [];
                         }
                     }
                     setProduct(matchedProduct);
+                } else {
+                    console.error("Product not found");
                 }
             } catch (error) {
                 console.error("❌ Error fetching product:", error);
@@ -56,14 +60,32 @@ export default function ProductPage() {
     };
 
     const handleAddToCart = () => {
-        addToCart(product, quantity, selectedVariations);
+        addToCart(product);
         toast.success("Added to cart successfully");
-        
     };
 
-    const handleCheckout = () => {
-        localStorage.setItem("checkoutData", JSON.stringify({ product, quantity, variations: selectedVariations }));
-        router.push("/checkout");
+    const handleOrderSubmit = () => {
+        const { name, address, phone, deliveryLocation } = orderForm;
+        if (!name || !address || !phone || !deliveryLocation) {
+            toast.error("Please fill all fields");
+            return;
+        }
+
+        console.log("Order Info:", {
+            ...orderForm,
+            product,
+            quantity,
+            variations: selectedVariations
+        });
+
+        toast.success("Order placed successfully!");
+        setOrderForm({ name: "", address: "", phone: "", deliveryLocation: "" });
+    };
+
+    const getDeliveryCharge = () => {
+        if (orderForm.deliveryLocation === "ঢাকার ভিতরে") return "৮০";
+        if (orderForm.deliveryLocation === "ঢাকার বাইরে") return "১৩০";
+        return null;
     };
 
     if (loading) return <p className="text-center">Loading...</p>;
@@ -85,15 +107,24 @@ export default function ProductPage() {
 
                     <div>
                         <h1 className="text-4xl font-bold">{product.name}</h1>
-                        <p className="text-gray-600 mt-2">{product.description}</p>
-
                         <div className="mt-4">
-                            <span className="text-2xl text-red-500 font-bold">BDT {product.salePrice || product.regularPrice}</span>
-                            {product.salePrice && <span className="text-lg text-gray-500 line-through ml-3">BDT {product.regularPrice}</span>}
+                            <span className="text-2xl text-red-500 font-bold">
+                                BDT {product.salePrice || product.regularPrice}
+                            </span>
+                            {product.salePrice && (
+                                <span className="text-lg text-gray-500 line-through ml-3">
+                                    BDT {product.regularPrice}
+                                </span>
+                            )}
+                            {orderForm.deliveryLocation && (
+                                <div className="mt-2 text-sm text-gray-700">
+                                    ডেলিভারি চার্জ: {getDeliveryCharge()} টাকা
+                                </div>
+                            )}
                         </div>
 
                         {product.variations.length > 0 && (
-                            <div className="mt-4">
+                            <div className="mt-4 flex gap-10">
                                 {product.variations.map(({ name, value }) => (
                                     <div key={name} className="mt-2">
                                         <label className="block font-semibold text-gray-700">{name}:</label>
@@ -102,7 +133,10 @@ export default function ProductPage() {
                                                 <button
                                                     key={val}
                                                     onClick={() => handleVariationChange(name, val)}
-                                                    className={`px-3 py-1 cursor-pointer rounded-md border ${selectedVariations[name] === val ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                                                    className={`px-3 py-1 cursor-pointer rounded-md border ${selectedVariations[name] === val
+                                                        ? "bg-blue-500 text-white"
+                                                        : "bg-gray-200"
+                                                        }`}
                                                 >
                                                     {val}
                                                 </button>
@@ -123,32 +157,83 @@ export default function ProductPage() {
                             />
                         </div>
 
-                        <div className="mt-6 flex space-x-4">
-                            <button onClick={handleAddToCart} className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 cursor-pointer">Add to Cart</button>
-                            <button onClick={handleCheckout} className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 cursor-pointer">Checkout</button>
+                        <div className="mt-8 bg-gray-100 rounded-lg p-4 shadow">
+                            <input
+                                type="text"
+                                placeholder="নাম"
+                                value={orderForm.name}
+                                onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
+                                className="w-full mb-3 p-2 rounded-md border"
+                            />
+                            <input
+                                type="text"
+                                placeholder="ঠিকানা"
+                                value={orderForm.address}
+                                onChange={(e) => setOrderForm({ ...orderForm, address: e.target.value })}
+                                className="w-full mb-3 p-2 rounded-md border"
+                            />
+                            <input
+                                type="tel"
+                                placeholder="ফোন নাম্বার"
+                                value={orderForm.phone}
+                                onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
+                                className="w-full mb-3 p-2 rounded-md border"
+                            />
+                            <select
+                                value={orderForm.deliveryLocation}
+                                onChange={(e) => setOrderForm({ ...orderForm, deliveryLocation: e.target.value })}
+                                className="w-full mb-4 p-2 rounded-md border"
+                            >
+                                <option value="">ডেলিভারি লোকেশন নির্বাচন করুন</option>
+                                <option value="ঢাকার ভিতরে">ঢাকার ভিতরে</option>
+                                <option value="ঢাকার বাইরে">ঢাকার বাইরে</option>
+                            </select>
+
+                            <button
+                                onClick={handleOrderSubmit}
+                                className="bg-[#439DDF] text-white px-3 md:px-6 lg:px-6 py-2 rounded-md hover:bg-blue-700 cursor-pointer"
+                            >
+                                এখনি অর্ডার দিন
+                            </button>
+                            <button
+                                onClick={handleAddToCart}
+                                className="border-2 border-[#439DDF] text-[#439DDF] px-3 md:px-6 lg:px-6 py-[6px] md:py-2    rounded-md cursor-pointer ml-3 md:ml-5 lg:ml-5 hover:bg-sky-700 hover:text-white hover:border-sky-700"
+                            >
+                                কার্টে নিন
+                            </button>
                         </div>
                     </div>
                 </div>
 
+                {/* Tabs */}
                 <div className="mt-10 bg-gray-100 shadow-md rounded-lg p-6">
                     <div className="flex mb-4">
                         <button
-                            onClick={() => setActiveTab("reviews")}
-                            className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "reviews" ? "border-b-4 border-blue-500 text-blue-500" : "text-gray-600 hover:text-blue-500 cursor-pointer"}`}
+                            onClick={() => setActiveTab("details")}
+                            className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "details"
+                                ? "border-b-4 border-blue-500 text-blue-500"
+                                : "text-gray-600 hover:text-blue-500 cursor-pointer"
+                                }`}
                         >
-                            Customer Reviews
+                            পণ্যের বিস্তারিত
                         </button>
                         <button
-                            onClick={() => setActiveTab("addReview")}
-                            className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "addReview" ? "border-b-4 border-blue-500 text-blue-500" : "text-gray-600 hover:text-blue-500 cursor-pointer"}`}
+                            onClick={() => setActiveTab("reviews")}
+                            className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "reviews"
+                                ? "border-b-4 border-blue-500 text-blue-500"
+                                : "text-gray-600 hover:text-blue-500 cursor-pointer"
+                                }`}
                         >
-                            Add a Review
+                            রিভিউ
                         </button>
                     </div>
 
+                    {activeTab === "details" && (
+                        <div className="text-gray-700 leading-relaxed whitespace-pre-line">{product.description}</div>
+                    )}
+
                     {activeTab === "reviews" && (
-                        <div className="mt-6">
-                            <h2 className="text-2xl font-bold">Customer Reviews</h2>
+                        <>
                             <div className="mt-4 space-y-4">
                                 {reviews.map((review, index) => (
                                     <div key={index} className="flex items-center gap-4 py-4 bg-white rounded-xl">
@@ -160,34 +245,38 @@ export default function ProductPage() {
                                     </div>
                                 ))}
                             </div>
-                        </div>
-                    )}
 
-                    {activeTab === "addReview" && (
-                        <div className="mt-6">
-                            <h3 className="text-xl font-semibold">Write a Review</h3>
-                            <textarea
-                                className="p-3 w-full rounded-lg mt-3 shadow-sm focus:ring focus:ring-blue-300 outline-0 bg-white border-0"
-                                rows="4"
-                                value={newReview}
-                                onChange={(e) => setNewReview(e.target.value)}
-                                placeholder="Share your experience..."
-                            />
-                            <button
-                                onClick={() => {
-                                    if (newReview.trim() !== "") {
-                                        setReviews([...reviews, { name: "Anonymous", avatar: "/default-avatar.png", review: newReview }]);
-                                        setNewReview("");
-                                    }
-                                }}
-                                className="mt-4 bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-all cursor-pointer"
-                            >
-                                Submit Review
-                            </button>
-                        </div>
+                            {/* Add review section */}
+                            <div className="mt-6">
+                                <h3 className="text-xl font-semibold">Write a Review</h3>
+                                <textarea
+                                    className="p-3 w-full rounded-lg mt-3 shadow-sm focus:ring focus:ring-blue-300 outline-0 bg-white border-0"
+                                    rows="4"
+                                    value={newReview}
+                                    onChange={(e) => setNewReview(e.target.value)}
+                                    placeholder="Share your experience..."
+                                />
+                                <button
+                                    onClick={() => {
+                                        if (newReview.trim() !== "") {
+                                            setReviews([...reviews, {
+                                                name: "Anonymous",
+                                                avatar: "/default-avatar.png",
+                                                review: newReview
+                                            }]);
+                                            setNewReview("");
+                                            toast.success("Review submitted!");
+                                        }
+                                    }}
+                                    className="mt-4 bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 transition-all cursor-pointer"
+                                >
+                                    Submit Review
+                                </button>
+                            </div>
+                        </>
                     )}
                 </div>
-            </div >
+            </div>
             <Footer />
         </>
     );

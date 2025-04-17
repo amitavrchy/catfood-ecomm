@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEdit, FaTrash, FaPlus, FaTimes } from "react-icons/fa";
+
 
 const initialCoupons = [
   { id: 1, code: "WELCOME10", discount: "10%", usageCount: 45, expires: "2024-12-31" },
@@ -60,8 +60,7 @@ export default function AdminCouponsPage() {
         <button 
           onClick={() => setIsEditing(true)}
           className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center gap-2"
-        >
-          <FaPlus /> Add Coupon
+        > Add Coupon
         </button>
       </div>
 
@@ -100,14 +99,12 @@ export default function AdminCouponsPage() {
                     <button
                       onClick={() => handleEditClick(coupon)}
                       className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2"
-                    >
-                      <FaEdit /> Edit
+                    > Edit
                     </button>
                     <button
                       onClick={() => deleteCoupon(coupon.id)}
                       className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
-                    >
-                      <FaTrash /> Delete
+                    >Delete
                     </button>
                   </td>
                 </tr>
@@ -126,7 +123,6 @@ export default function AdminCouponsPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">{editCoupon ? "Edit Coupon" : "Add Coupon"}</h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <FaTimes />
               </button>
             </div>
 

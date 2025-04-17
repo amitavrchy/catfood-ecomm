@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { BarChart, PieChart } from "@mui/x-charts";
-import { FaChartLine, FaUsers, FaShoppingCart, FaDollarSign } from "react-icons/fa";
 
 const initialStats = {
   revenue: 256000,
@@ -36,17 +35,17 @@ export default function AdminReportsPage() {
       {/* Metrics Overview */}
       <div className="grid md:grid-cols-3 gap-6 mb-6">
         <div className="bg-blue-500 text-white p-5 rounded-lg shadow-md flex flex-col items-center">
-          <FaDollarSign className="text-4xl mb-2" />
+          <div className="text-4xl mb-2">💰</div>
           <h2 className="text-lg font-semibold">Total Revenue</h2>
           <p className="text-2xl font-bold">BDT {stats.revenue.toLocaleString()}</p>
         </div>
         <div className="bg-green-500 text-white p-5 rounded-lg shadow-md flex flex-col items-center">
-          <FaShoppingCart className="text-4xl mb-2" />
+          <div className="text-4xl mb-2">🛒</div>
           <h2 className="text-lg font-semibold">Total Transactions</h2>
           <p className="text-2xl font-bold">{stats.transactions.toLocaleString()}</p>
         </div>
         <div className="bg-purple-500 text-white p-5 rounded-lg shadow-md flex flex-col items-center">
-          <FaUsers className="text-4xl mb-2" />
+          <div className="text-4xl mb-2">👥</div>
           <h2 className="text-lg font-semibold">Total Customers</h2>
           <p className="text-2xl font-bold">{stats.users.total.toLocaleString()}</p>
         </div>
@@ -54,7 +53,7 @@ export default function AdminReportsPage() {
 
       {/* Order Analytics */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-md mb-6">
-        <h3 className="text-xl font-bold">Order Overview</h3>
+        <h3 className="text-xl font-bold mb-4">Order Overview</h3>
         <PieChart
           series={[
             {
@@ -73,7 +72,7 @@ export default function AdminReportsPage() {
 
       {/* Revenue Breakdown */}
       <div className="bg-gray-100 p-5 rounded-lg shadow-md">
-        <h3 className="text-xl font-bold">Revenue Breakdown</h3>
+        <h3 className="text-xl font-bold mb-4">Revenue Breakdown</h3>
         <BarChart
           xAxis={[{ scaleType: "band", data: ["Electronics", "Fashion", "Gaming", "Home"] }]}
           series={[{ data: [45000, 32000, 60000, 25000] }]}

@@ -1,3 +1,4 @@
+"use client"
 import CategoryCards from '@/components/CategoryCards'
 import CategorySlider from '@/components/CategoryNav'
 import Footer from '@/components/Footer'
@@ -9,20 +10,20 @@ import Navbar from '@/components/Navbar'
 import RestHome from '@/components/RestHome'
 import TabbedHome from '@/components/TabbedHome/page'
 import React from 'react'
+import { Suspense } from 'react';
 
 const HomePage = () => {
   return (
     <>
+      <Suspense fallback={<div>Loading Filter 1...</div>}>
         <Navbar />
-        <CategorySlider />
         <Hero />
         <CategoryCards />
-        <HomeImageSection1 />
         <LatestProducts />
-        <HomeImageSection2 />
         <TabbedHome />
-        <RestHome />  
-        <Footer />
+        <RestHome />
+      </Suspense>
+      <Footer />
     </>
   )
 }

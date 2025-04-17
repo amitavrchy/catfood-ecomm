@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { FaCheckCircle } from "react-icons/fa";
 
 export default function OrderSummary() {
     const router = useRouter();
@@ -26,7 +25,9 @@ export default function OrderSummary() {
             <div className="max-w-4xl mx-auto p-6">
                 {/* Success Message */}
                 <div className="flex flex-col items-center text-center">
-                    <FaCheckCircle className="text-green-500 text-6xl mb-3" />
+                    <svg className="text-green-500 text-6xl mb-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="48" height="48">
+                        <path fillRule="evenodd" d="M12 0a12 12 0 110 24A12 12 0 0112 0zm5.86 8.86l-7 7a1 1 0 01-1.43-1.4l4.93-4.92a1 1 0 011.43 1.4zM6.86 10.14a1 1 0 010 1.4l4.92 4.93a1 1 0 001.4-1.43l-7-7a1 1 0 00-1.4 1.43l2.08 2.07z" clipRule="evenodd" />
+                    </svg>
                     <h1 className="text-3xl font-bold text-gray-800">Thank You for Your Order!</h1>
                     <p className="text-gray-600 mt-2">
                         Your order has been placed successfully. We will notify you when it's shipped.

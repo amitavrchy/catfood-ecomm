@@ -1,7 +1,6 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
@@ -79,7 +78,7 @@ const SignIn = () => {
               <p className="mt-6 text-center text-gray-700 text-lg">
                 Don’t have an account?{' '}
                 <Link href="/signUp" className="text-blue-500 hover:text-blue-700 flex items-center justify-center gap-1">
-                  Sign Up <AiOutlineArrowRight />
+                  Sign Up
                 </Link>
               </p>
             </div>

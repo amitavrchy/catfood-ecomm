@@ -1,8 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import { FaEdit, FaTrash, FaPlus, FaTimes } from "react-icons/fa";
 
 const initialProducts = [
   { id: 1, name: "Wireless Headphones", price: "BDT 3200.00", stock: 15, category: "Electronics" },
@@ -15,6 +14,20 @@ export default function AdminProductPage() {
   const [search, setSearch] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
+
+  // useEffect(() => {
+  //   async function fetchProducts() {
+  //     try {
+  //       const res = await fetch("/api/products");
+  //       const data = await res.json();
+  //       setProducts(data.products);
+  //     }
+  //     catch (error) {
+  //       console.error(error)
+  //     }
+  //   }
+  //   fetchProducts()
+  // }, [])
 
   // Open Edit Modal
   const handleEditClick = (product) => {
@@ -59,7 +72,11 @@ export default function AdminProductPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Product Management</h1>
         <Link href="/dashboard/products/new" className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center gap-2">
-          <FaPlus /> Add Product
+          {/* Add Product Icon (SVG) */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Product
         </Link>
       </div>
 
@@ -99,13 +116,21 @@ export default function AdminProductPage() {
                       onClick={() => handleEditClick(product)}
                       className="px-3 py-2 bg-yellow-500 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaEdit /> Edit
+                      {/* Edit Icon (SVG) */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3h2a2 2 0 012 2v14a2 2 0 01-2 2H9a2 2 0 01-2-2V5a2 2 0 012-2h2z" />
+                      </svg>
+                      Edit
                     </button>
                     <button
                       onClick={() => deleteProduct(product.id)}
                       className="px-3 py-2 bg-red-600 text-white rounded-md flex items-center gap-2"
                     >
-                      <FaTrash /> Delete
+                      {/* Delete Icon (SVG) */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -124,7 +149,10 @@ export default function AdminProductPage() {
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Edit Product</h2>
               <button onClick={closeModal} className="text-gray-500 hover:text-gray-700">
-                <FaTimes />
+                {/* Close Icon (SVG) */}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
 

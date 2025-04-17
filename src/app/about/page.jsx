@@ -2,7 +2,6 @@
 
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { FaHandshake, FaLightbulb, FaUsers, FaQuoteLeft } from "react-icons/fa";
 
 const testimonials = [
     { user: "সজীব হাসান", quote: "এখানকার পণ্যগুলোর গুণগত মান অসাধারণ! বারবার কেনা যায়।" },
@@ -13,17 +12,23 @@ export default function AboutUsPage() {
     return (
         <>
             <Navbar />
-            <div className="text-center py-16 bg-gradient-to-r from-blue-700 to-blue-500 text-white rounded-lg shadow-md mb-10">
+            <div className="text-center py-16 bg-gradient-to-r from-gray-900 to-slate-600 text-white rounded-lg shadow-md mb-10">
                 <h1 className="text-4xl font-extrabold">আমাদের সম্পর্কে</h1>
                 <p className="text-lg mt-2">আমরা পণ্য সরবরাহ করি বিশ্বাস, মান এবং সহজলভ্যতার সাথে।</p>
             </div>
+
 
             <div className="max-w-7xl mx-auto p-6 bg-white rounded-xl shadow-2xl">
                 {/* Company Overview */}
                 <div className="bg-gradient-to-br from-gray-50 to-white p-10 rounded-xl shadow-lg mb-10 border border-gray-200">
                     <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">আমাদের যাত্রা</h2>
                     <p className="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto text-center">
-                        <strong>২০১০</strong> সালে আমাদের শুরু। লক্ষ্য ছিলো অনলাইন বাজারে নতুন মাত্রা যোগ করা। আমরা বিশ্বাস করি, <strong>বিশ্বস্ততা, উদ্ভাবন এবং কাস্টমার সন্তুষ্টিই</strong> আমাদের অগ্রযাত্রার মূল চাবিকাঠি। এখন আমরা হাজারো গ্রাহকের আস্থা অর্জন করেছি।
+                        Lixci-তে স্বাগতম — স্মার্ট শপিংয়ের সহজ ঠিকানা।
+
+                        ২০২২ সালে ঢাকায় শুরু হওয়া Lixci-এর লক্ষ্য খুবই স্পষ্ট — মানসম্পন্ন পণ্য ও দরকারি ডিজিটাল সেবা সহজে এবং নির্ভরযোগ্যভাবে আপনাদের কাছে পৌঁছে দেওয়া।
+
+                        আমরা চাই, আপনার অনলাইন শপিং অভিজ্ঞতা হোক ঝামেলামুক্ত, দ্রুত ও আপনার দৈনন্দিন জীবনের সাথে মানানসই।
+                        হোক সেটা ঘরের দরকারি কিছু জিনিস, কিংবা বিশেষ কোনো পরিষেবা — Lixci সবসময় সেরা সুবিধা, স্বচ্ছতা আর যত্ন নিয়ে পাশে আছে।
                     </p>
 
                     <div className="mt-10 flex flex-wrap justify-center gap-8">
@@ -55,42 +60,21 @@ export default function AboutUsPage() {
                     <h2 className="text-2xl font-bold mb-6 text-center">আমাদের মূলনীতি</h2>
                     <div className="grid md:grid-cols-3 gap-6 text-center">
                         <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300">
-                            <FaHandshake className="text-4xl text-blue-600 mx-auto mb-4" />
+                            <div className="text-4xl mx-auto mb-4">🤝</div>
                             <h3 className="text-lg font-bold mb-2">বিশ্বস্ততা</h3>
                             <p className="text-gray-600">আমরা আমাদের গ্রাহকদের সাথে সব সময় সৎ এবং স্বচ্ছ সম্পর্ক বজায় রাখি।</p>
                         </div>
                         <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300">
-                            <FaLightbulb className="text-4xl text-yellow-500 mx-auto mb-4" />
+                            <div className="text-4xl mx-auto mb-4">💡</div>
                             <h3 className="text-lg font-bold mb-2">উদ্ভাবন</h3>
                             <p className="text-gray-600">সব সময় নতুন ধারণা এবং প্রযুক্তি দিয়ে পণ্য ও সেবা উন্নত করি।</p>
                         </div>
                         <div className="p-6 bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300">
-                            <FaUsers className="text-4xl text-green-500 mx-auto mb-4" />
+                            <div className="text-4xl mx-auto mb-4">👥</div>
                             <h3 className="text-lg font-bold mb-2">গ্রাহক প্রাধান্য</h3>
                             <p className="text-gray-600">প্রতিটি পদক্ষেপে আমরা গ্রাহকের অভিজ্ঞতা ও চাহিদাকে অগ্রাধিকার দেই।</p>
                         </div>
                     </div>
-                </div>
-
-                {/* Testimonials */}
-                <div className="bg-gray-50 p-8 rounded-lg shadow-md mb-10">
-                    <h2 className="text-2xl font-bold mb-6 text-center">গ্রাহকরা কী বলছেন</h2>
-                    <div className="grid md:grid-cols-2 gap-6">
-                        {testimonials.map((testimonial, index) => (
-                            <div key={index} className="p-6 bg-white rounded-lg shadow-md hover:shadow-xl transition duration-300">
-                                <FaQuoteLeft className="text-3xl text-gray-400 mb-4" />
-                                <p className="text-gray-700 italic">"{testimonial.quote}"</p>
-                                <p className="text-gray-500 mt-4 font-semibold">- {testimonial.user}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Call to Action */}
-                <div className="text-center py-10 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg">
-                    <h2 className="text-2xl font-bold">আপনিও আমাদের গ্রাহক হোন!</h2>
-                    <p className="mt-2">বিশ্বস্ততা এবং মানের নিশ্চয়তায় আপনার পছন্দের পণ্য কিনুন এখনই।</p>
-                    <button className="mt-5 px-8 py-3 bg-white text-blue-700 font-semibold rounded-md shadow-md hover:shadow-lg transition duration-300">যোগাযোগ করুন</button>
                 </div>
             </div>
             <Footer />

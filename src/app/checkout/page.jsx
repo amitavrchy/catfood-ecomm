@@ -5,13 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const districts = [
-    "Bagerhat", "Bandarban", "Barguna", "Barishal", "Bhola", "Bogura", "Brahmanbaria", "Chandpur", "Chattogram",
-    "Chuadanga", "Cox's Bazar", "Cumilla", "Dhaka", "Dinajpur", "Faridpur", "Feni", "Gaibandha", "Gazipur", "Gopalganj",
-    "Habiganj", "Jamalpur", "Jashore", "Jhalokathi", "Jhenaidah", "Joypurhat", "Khagrachari", "Khulna", "Kishoreganj",
-    "Kurigram", "Kushtia", "Lakshmipur", "Lalmonirhat", "Madaripur", "Magura", "Manikganj", "Meherpur", "Moulvibazar",
-    "Munshiganj", "Mymensingh", "Naogaon", "Narail", "Narayanganj", "Narsingdi", "Natore", "Netrokona", "Nilphamari",
-    "Noakhali", "Pabna", "Panchagarh", "Patuakhali", "Pirojpur", "Rajbari", "Rajshahi", "Rangamati", "Rangpur",
-    "Satkhira", "Shariatpur", "Sherpur", "Sirajganj", "Sunamganj", "Sylhet", "Tangail", "Thakurgaon"
+    "ঢাকার ভিতরে", "ঢাকার বাইরে"
 ];
 
 export default function CheckoutPage() {
@@ -42,7 +36,7 @@ export default function CheckoutPage() {
         setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
 
         if (e.target.name === "district") {
-            const newShippingFee = e.target.value === "Dhaka" ? 80 : 130;
+            const newShippingFee = e.target.value === "ঢাকার ভিতরে" ? 80 : 120;
             setShippingFee(newShippingFee);
         }
     };
@@ -162,17 +156,6 @@ export default function CheckoutPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block font-medium text-gray-700">ইমেইল</label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={shippingInfo.email}
-                                    onChange={handleInputChange}
-                                    className="border p-2 rounded-md w-full"
-                                    required
-                                />
-                            </div>
-                            <div>
                                 <label className="block font-medium text-gray-700">ফোন</label>
                                 <input
                                     type="text"
@@ -195,7 +178,7 @@ export default function CheckoutPage() {
                                 />
                             </div>
                             <div>
-                                <label className="block font-medium text-gray-700">জেলা</label>
+                                <label className="block font-medium text-gray-700">ডেলিভারি লোকেশন</label>
                                 <select
                                     name="district"
                                     value={shippingInfo.district}
@@ -210,18 +193,6 @@ export default function CheckoutPage() {
                                     ))}
                                 </select>
                             </div>
-                            <div>
-                                <label className="block font-medium text-gray-700">জিপ কোড</label>
-                                <input
-                                    type="text"
-                                    name="zip"
-                                    value={shippingInfo.zip}
-                                    onChange={handleInputChange}
-                                    className="border p-2 rounded-md w-full"
-                                    required
-                                />
-                            </div>
-
                             {/* Submit Button */}
                             <div className="flex justify-center mt-6">
                                 <button
