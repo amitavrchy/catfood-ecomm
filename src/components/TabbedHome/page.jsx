@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Toaster, toast } from "react-hot-toast";
 import { useCart } from "@/utils/CartContext";
+import { Heart, HeartIcon } from "lucide-react";
+
 
 export default function LatestProducts() {
     const { addToCart } = useCart();
@@ -12,6 +14,15 @@ export default function LatestProducts() {
     const [cart, setCart] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [orderDetails, setOrderDetails] = useState({ name: "", address: "", phone: "" });
+    const [wishlist, setWishlist] = useState([]);
+
+    const toggleWishlist = (product) => {
+        setWishlist((prev) =>
+            prev.includes(product._id)
+                ? prev.filter((id) => id !== product._id)
+                : [...prev, product._id]
+        );
+    };
 
     useEffect(() => {
         // Replace API type logic with hard slicing if needed
@@ -69,8 +80,8 @@ export default function LatestProducts() {
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={`px-5 py-2 rounded-full font-semibold capitalize transition ${activeTab === tab
-                                        ? "bg-[#439DDF] text-white shadow"
-                                        : "text-gray-700 hover:bg-gray-200"
+                                    ? "bg-[#439DDF] text-white shadow"
+                                    : "text-gray-700 hover:bg-gray-200"
                                     }`}
                             >
                                 {tab === "best" && "Best Seller"}
@@ -83,37 +94,54 @@ export default function LatestProducts() {
                 </div>
 
                 {/* Product Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="w-full p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-5">
                     {loading
                         ? Array.from({ length: 4 }).map((_, i) => (
                             <div key={i} className="w-full h-80 bg-gray-200 animate-pulse rounded-xl"></div>
                         ))
                         : (tabProductSlices[activeTab] || []).map((product) => (
-                            <div key={product._id} className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
-                                <Link href={`/products/${product._id}`}>
-                                    <img
-                                        src={product.imageUrl || "/placeholder.png"}
-                                        alt={product.name}
-                                        className="h-48 w-full object-cover"
-                                    />
-                                </Link>
-                                <div className="p-4 flex-1 flex flex-col justify-between">
-                                    <div>
+                            <div key={product._id} className="card bg-base-100 shadow-xl p-5 relative">
+
+                                {/* Wishlist Button */}
+                                <button
+                                    onClick={() => toggleWishlist(product)}
+                                    className="absolute top-3 right-3 z-10 text-gray-500 hover:scale-110 transition-transform"
+                                >
+                                    {wishlist.includes(product._id) ? (
+                                        <HeartIcon className="w-5 h-5 fill-gray-500 stroke-gray-500" />
+                                    ) : (
+                                        <Heart className="w-5 h-5" />
+                                    )}
+                                </button>
+
+                                <figure className="my-5 h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                                    <div className="w-4/5 mx-auto bg-gray-200">
                                         <Link href={`/products/${product._id}`}>
-                                            <h3 className="text-lg font-semibold text-gray-800 hover:underline">
-                                                {product.name}
-                                            </h3>
+                                            <div className="py-5 h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img
+                                                    src={product.imageUrl || "/placeholder.png"}
+                                                    alt={product.name}
+                                                    className="max-h-full max-w-full object-contain"
+                                                />
+                                            </div>
                                         </Link>
-                                        <p className="text-red-600 font-bold mt-1">
-                                            BDT {product.salePrice || product.regularPrice}
-                                        </p>
-                                        {product.salePrice && (
-                                            <p className="text-sm text-gray-500 line-through">
-                                                BDT {product.regularPrice}
-                                            </p>
-                                        )}
                                     </div>
-                                    <div className="mt-4 flex gap-2">
+                                </figure>
+
+                                <div className="card-body">
+                                    <Link href={`/products/${product._id}`}>
+                                        <h2 className="text-gray-700 font-bold text-lg hover:underline">{product.name}</h2>
+                                    </Link>
+                                    <p className="text-lg font-semibold text-red-500">
+                                        BDT {product.salePrice || product.regularPrice}
+                                    </p>
+                                    {product.salePrice && (
+                                        <p className="text-sm text-gray-500 line-through">
+                                            BDT {product.regularPrice}
+                                        </p>
+                                    )}
+
+                                    <div className="flex gap-2 card-actions justify-between mt-5 text-gray-700">
                                         <button
                                             onClick={() => {
                                                 addToCart(product);

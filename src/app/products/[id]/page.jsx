@@ -209,15 +209,6 @@ export default function ProductPage() {
                 <div className="mt-10 bg-gray-100 shadow-md rounded-lg p-6">
                     <div className="flex mb-4">
                         <button
-                            onClick={() => setActiveTab("details")}
-                            className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "details"
-                                ? "border-b-4 border-blue-500 text-blue-500"
-                                : "text-gray-600 hover:text-blue-500 cursor-pointer"
-                                }`}
-                        >
-                            পণ্যের বিস্তারিত
-                        </button>
-                        <button
                             onClick={() => setActiveTab("reviews")}
                             className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "reviews"
                                 ? "border-b-4 border-blue-500 text-blue-500"
@@ -225,6 +216,15 @@ export default function ProductPage() {
                                 }`}
                         >
                             রিভিউ
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("details")}
+                            className={`px-6 py-3 text-lg font-semibold transition-all ${activeTab === "details"
+                                ? "border-b-4 border-blue-500 text-blue-500"
+                                : "text-gray-600 hover:text-blue-500 cursor-pointer"
+                                }`}
+                        >
+                            পণ্যের বিস্তারিত
                         </button>
                     </div>
 

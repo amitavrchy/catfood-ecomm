@@ -5,24 +5,14 @@ import 'animate.css';
 const sliderItems = [
     {
         id: 1,
-        title: "এক্সক্লুসিভ অফার, ৪০% ছাড়",
-        description: "গেমিং এর দুনিয়ায় হারিয়ে যান, প্লেস্টেশন ৫ পাওয়া যাচ্ছে",
+        title: "শীতল বাতাস ও আলো একসাথে",
+        description: "একটি ফ্যান, দুইটি সুবিধা",
         primaryBtnName: "এখন কিনুন",
         primaryBtnURL: "#",
         secondaryBtnName: "আরো দেখুন",
         secondaryBtnURL: "#",
-        productImageURL: "https://i.ibb.co/TxgxrNgh/header-playstation-image-Dg2-F6g-Fl.png"
+        productImageURL: "a.png"
     },
-    {
-        id: 2,
-        title: "আর মাত্র কয়েক ঘন্টা বাকি!",
-        description: "সেরা গেমিং অভিজ্ঞতা অর্জন করুন",
-        primaryBtnName: "এখন কিনুন",
-        primaryBtnURL: "#",
-        secondaryBtnName: "আরো জানুন",
-        secondaryBtnURL: "#",
-        productImageURL: "https://i.ibb.co.com/7tD7xnHv/header-headphone-image-Hdy-T0g-V.png"
-    }
 ];
 
 const Hero = () => {

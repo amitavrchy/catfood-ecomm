@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast, Toaster } from "react-hot-toast";
 import { useCart } from "@/utils/CartContext";
+import { Heart, HeartIcon } from "lucide-react";
 
 export default function LatestProducts() {
     const { addToCart } = useCart();
@@ -10,6 +11,15 @@ export default function LatestProducts() {
     const [loading, setLoading] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [orderDetails, setOrderDetails] = useState({ name: "", address: "", phone: "" });
+    const [wishlist, setWishlist] = useState([]);
+
+    const toggleWishlist = (product) => {
+        setWishlist((prev) =>
+            prev.includes(product._id)
+                ? prev.filter((id) => id !== product._id)
+                : [...prev, product._id]
+        );
+    };
 
     useEffect(() => {
         fetch("/api/products")
@@ -63,24 +73,50 @@ export default function LatestProducts() {
                             <div key={index} className="w-full h-80 bg-gray-200 animate-pulse rounded-xl"></div>
                         ))
                         : products.slice(0, 8).map((product) => (
-                            <div key={product._id} className="card bg-base-100 shadow-xl p-5">
-                                <figure>
-                                    <Link href={`/products/${product._id}`}>
-                                        <img src={product.imageUrl || "/placeholder.png"} alt={product.name} className="h-48 w-full object-cover" />
-                                    </Link>
+                            <div key={product._id} className="card bg-base-100 shadow-xl p-5 relative">
+                                {/* Wishlist Button */}
+                                <button
+                                    onClick={() => toggleWishlist(product)}
+                                    className="absolute top-3 right-3 z-10 text-gray-500 hover:scale-110 transition-transform"
+                                >
+                                    {wishlist.includes(product._id) ? (
+                                        <HeartIcon className="w-5 h-5 fill-gray-500 stroke-gray-500" />
+                                    ) : (
+                                        <Heart className="w-5 h-5" />
+                                    )}
+                                </button>
+
+                                <figure className="my-5 h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                                    <div className="w-4/5 mx-auto bg-gray-200">
+                                        <Link href={`/products/${product._id}`}>
+                                            <div className="py-5 h-48 w-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                                                <img
+                                                    src={product.imageUrl || "/placeholder.png"}
+                                                    alt={product.name}
+                                                    className="max-h-full max-w-full object-contain"
+                                                />
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </figure>
+
                                 <div className="card-body">
                                     <Link href={`/products/${product._id}`}>
                                         <h2 className="text-gray-700 font-bold text-lg">{product.name}</h2>
                                     </Link>
-                                    <p className="text-lg font-semibold text-red-500">BDT {product.salePrice || product.regularPrice}</p>
+                                    <p className="text-lg font-semibold text-red-500">
+                                        BDT {product.salePrice || product.regularPrice}
+                                    </p>
                                     {product.salePrice && (
-                                        <p className="text-sm text-gray-500 line-through">BDT {product.regularPrice}</p>
+                                        <p className="text-sm text-gray-500 line-through">
+                                            BDT {product.regularPrice}
+                                        </p>
                                     )}
+
                                     <div className="flex gap-2 card-actions justify-between mt-5 text-gray-700">
                                         <button
                                             onClick={() => {
-                                                console.log(product)
+                                                console.log(product);
                                                 addToCart(product);
                                                 toast.success("Product Added to Cart");
                                             }}
@@ -95,7 +131,6 @@ export default function LatestProducts() {
                                             এখনি কিনুন
                                         </button>
                                     </div>
-
                                 </div>
                             </div>
                         ))}

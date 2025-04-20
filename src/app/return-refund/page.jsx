@@ -4,36 +4,54 @@ import Navbar from "@/components/Navbar";
 import Head from "next/head";
 
 export default function ReturnRefundPolicy() {
-    return (
-        <>
-            <Navbar />
-            <div className="mx-20">
-                <Head>
-                    <title>Return & Refund Policy | Lixci</title>
-                    <meta name="description" content="Read Lixci's return and refund policy. Learn about eligibility, refund process, and how to initiate a return." />
-                </Head>
+  return (
+    <>
+      <Navbar />
+      <Head>
+        <title>Return & Refund Policy | Lixci</title>
+        <meta
+          name="description"
+          content="Read Lixci's return and refund policy. Learn about eligibility, refund process, and how to initiate a return."
+        />
+      </Head>
 
-                <div className="mx-auto px-4 py-12 text-gray-800">
-                    <h1 className="text-3xl font-bold mb-6 text-gray-900">🔁 Return & Refund Policy</h1>
+      <div className="mx-4 md:mx-20 py-12 bg-gray-50 min-h-screen">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-10">
+            🔁 রিটার্ন ও রিফান্ড নীতিমালা
+          </h1>
 
-                    <p className="mb-4">
-                        We accept returns within <strong>7 days of delivery</strong>, as long as the item is unused and in its original packaging.
-                    </p>
+          {/* Card 1 */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">রিটার্ন গ্রহণের শর্তাবলি</h2>
+            <p className="text-gray-700">
+              আমরা ডেলিভারির ৭ দিনের মধ্যে রিটার্ন গ্রহণ করি, যদি পণ্যটি অব্যবহৃত থাকে এবং মূল প্যাকেজিংয়ে থাকে।
+            </p>
+          </div>
 
-                    <ul className="list-disc list-inside space-y-2 mb-6 text-gray-700">
-                        <li>Refunds are issued via the original payment method.</li>
-                        <li>Exchanges are available for eligible items.</li>
-                        <li>Store credit is <strong>not</strong> offered at this time.</li>
-                        <li>Return shipping costs are the responsibility of the buyer.</li>
-                        <li>Digital goods are <strong>non-refundable</strong>.</li>
-                    </ul>
+          {/* Card 2 */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">রিটার্ন ও রিফান্ড সম্পর্কিত নীতিমালা</h2>
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
+              <li>রিফান্ড মূল পেমেন্ট মাধ্যমেই প্রদান করা হবে।</li>
+              <li>যোগ্য পণ্যের ক্ষেত্রে এক্সচেঞ্জ (বদল) এর সুযোগ রয়েছে।</li>
+              <li>বর্তমানে আমরা কোনো ধরনের স্টোর ক্রেডিট অফার করি না।</li>
+              <li>রিটার্ন শিপিং খরচ ক্রেতাকেই বহন করতে হবে।</li>
+              <li>ডিজিটাল পণ্যসমূহ ফেরতযোগ্য নয়।</li>
+            </ul>
+          </div>
 
-                    <p>
-                        If you'd like to initiate a return, please contact our support team with your order details. We’re here to help!
-                    </p>
-                </div>
-            </div>
-            <Footer />
-        </>
-    );
+          {/* Card 3 */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">রিটার্ন করার প্রক্রিয়া</h2>
+            <p className="text-gray-700">
+              রিটার্ন করতে চাইলে, অনুগ্রহ করে আপনার অর্ডার বিবরণসহ আমাদের সাপোর্ট টিমের সঙ্গে যোগাযোগ করুন।
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+    </>
+  );
 }

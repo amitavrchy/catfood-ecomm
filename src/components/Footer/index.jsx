@@ -16,7 +16,9 @@ export default function Footer() {
             Lixci
           </Link>
           <p className="mt-2 text-sm text-gray-400 w-2/3">
-            আপনার কেনাকাটার জন্যে বিশ্বাসযোগ্য ও সেরা প্ল্যাটফর্ম।
+            Lixci — আপনার নির্ভরযোগ্য অনলাইন শপিং পার্টনার।
+            বিশ্বস্ত পণ্য, দ্রুত ডেলিভারি এবং সাশ্রয়ী দামে কেনাকাটার সেরা গন্তব্য।
+            ঘরে বসেই সহজেই পছন্দের পণ্য কিনুন Lixci থেকে।
           </p>
         </div>
 
@@ -58,7 +60,6 @@ export default function Footer() {
             <div className="flex space-x-4 mt-4 text-gray-400">
               <Link href="#" className=" flex  gap-1 hover:text-blue-500 transition">
                 <Facebook className="w-5 h-5" />
-                Contact on Facebook
               </Link>
             </div>
           </div>

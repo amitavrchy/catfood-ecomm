@@ -6,43 +6,57 @@ export default function ShippingPolicy() {
   return (
     <>
       <Navbar />
-      <div className="mx-4 md:mx-20">
-        <Head>
-          <title>Shipping Policy | Lixci</title>
-          <meta
-            name="description"
-            content="Learn about our shipping process, delivery times, fees, and pre-order options at Lixci."
-          />
-        </Head>
+      <Head>
+        <title>🚚 শিপিং নীতিমালা</title>
+        <meta
+          name="description"
+          content="Learn about our shipping process, delivery times, fees, and pre-order options at Lixci."
+        />
+      </Head>
 
-        <div className="mx-auto px-4 py-12 text-gray-800">
-          <h1 className="text-3xl font-bold mb-6 text-gray-900">🚚 Shipping Policy</h1>
+      <div className="mx-4 md:mx-20 py-12 bg-gray-50 min-h-screen">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <h1 className="text-4xl font-extrabold text-center text-gray-900 mb-10">
+            🚚 শিপিং নীতিমালা
+          </h1>
 
-          <p className="mb-4">
-            We ship across Bangladesh using trusted courier partners like{" "}
-            <strong>SteadFast, RedEx, Pathao</strong>, and others.
-          </p>
+          {/* Card 1: Shipping Partners */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">আমাদের কুরিয়ার পার্টনার</h2>
+            <p className="text-gray-700">
+              আমরা বাংলাদেশের সর্বত্র পণ্য পাঠাই বিশ্বস্ত কুরিয়ার পার্টনার যেমন SteadFast, RedEx, Pathao এবং অন্যান্যদের মাধ্যমে।
+            </p>
+          </div>
 
-          <ul className="list-disc list-inside space-y-2 mb-6 text-gray-700">
-            <li>
-              <strong>Delivery Time:</strong> 2–3 working days
-            </li>
-            <li>
-              <strong>Shipping Fees:</strong> Applied at checkout (no free shipping currently, except during special promotions)
-            </li>
-            <li>
-              <strong>Tracking:</strong> Available for all orders
-            </li>
-            <li>
-              <strong>Pre-orders:</strong> Allowed for out-of-stock items
-            </li>
-          </ul>
+          {/* Card 2: Shipping Details */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">শিপিং বিবরণ</h2>
+            <ul className="list-disc list-inside text-gray-700 space-y-2">
+              <li>
+                <strong>ডেলিভারির সময়:</strong> ২-৩ কর্মদিবস
+              </li>
+              <li>
+                <strong>শিপিং চার্জ:</strong> চেকআউটের সময় প্রযোজ্য (বর্তমানে কোনো ফ্রি শিপিং নেই, তবে বিশেষ প্রমোশনের সময় ব্যতিক্রম হতে পারে)
+              </li>
+              <li>
+                <strong>ট্র্যাকিং:</strong> সব অর্ডারের জন্য ট্র্যাকিং সুবিধা রয়েছে
+              </li>
+              <li>
+                <strong>প্রি-অর্ডার:</strong> স্টকে না থাকা পণ্যের জন্য প্রি-অর্ডার গ্রহণযোগ্য
+              </li>
+            </ul>
+          </div>
 
-          <p>
-            We work hard to ensure timely and secure delivery of your purchases. If you face any delivery issues, please don’t hesitate to contact our support team.
-          </p>
+          {/* Card 3: Our Commitment */}
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">আমাদের প্রতিশ্রুতি</h2>
+            <p className="text-gray-700">
+              আমরা আপনার কেনাকাটা সঠিক সময়ে ও নিরাপদে পৌঁছাতে সর্বোচ্চ চেষ্টা করি।
+            </p>
+          </div>
         </div>
       </div>
+
       <Footer />
     </>
   );
