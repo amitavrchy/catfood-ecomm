@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ShoppingCart, User, Menu } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const menus = [
     { name: "হোম", url: "/" },
@@ -42,11 +44,34 @@ export default function Navbar() {
         }
     }, [searchTerm, products]);
 
+    const { data: session } = useSession();
+    const router = useRouter();
+
+    const handleClick = () => {
+        if (!session?.user) {
+            router.push("/signIn");
+        } else if (session.user.userType === "admin") {
+            router.push("/dashboard");
+        } else {
+            router.push("/account");
+        }
+    };
+
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50 w-full">
             <div className="container mx-auto px-4 py-3 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="text-2xl font-bold text-primary">Lixci</Link>
+                <Link
+                    href="/"
+                    onClick={(e) => {
+                        if (pathname === "/") {
+                            e.preventDefault(); // Prevent reload if already on home
+                        }
+                    }}
+                    className="text-2xl font-bold text-primary"
+                >
+                    Lixci
+                </Link>
 
                 {/* Search Bar */}
                 <div className="relative">
@@ -100,9 +125,12 @@ export default function Navbar() {
                             </span>
                         )}
                     </Link>
-                    <Link href="/account" className="hover:scale-110 transition-transform duration-300">
+                    <button
+                        onClick={handleClick}
+                        className="hover:scale-110 transition-transform duration-300"
+                    >
                         <User className="w-6 h-6" />
-                    </Link>
+                    </button>
                 </div>
 
                 {/* Mobile Menu Toggle */}

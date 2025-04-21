@@ -84,10 +84,10 @@ export default function LatestProducts() {
                                     : "text-gray-700 hover:bg-gray-200"
                                     }`}
                             >
-                                {tab === "best" && "Best Seller"}
-                                {tab === "new" && "New Arrivals"}
-                                {tab === "top" && "Top Rated"}
-                                {tab === "featured" && "Featured"}
+                                {tab === "best" && "বেস্ট সেলার"}
+                                {tab === "new" && "নিউ এরাইভাল"}
+                                {tab === "top" && "টপ রেটেড"}
+                                {tab === "featured" && "ফিচারড"}
                             </button>
                         ))}
                     </div>

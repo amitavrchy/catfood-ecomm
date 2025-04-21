@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useState } from "react";
@@ -24,11 +24,21 @@ const SignIn = () => {
 
     if (res?.error) {
       toast.error(res.error);
+      setLoading(false);
+      return;
+    }
+
+    toast.success("Login Successful!");
+
+    // Get session to determine user type
+    const session = await getSession();
+
+    if (session?.user?.userType === "admin") {
+      router.push("/dashboard");
     } else {
-      console.log(res);
-      toast.success("Login Successful!");
       router.push("/");
     }
+
     setLoading(false);
   };
 

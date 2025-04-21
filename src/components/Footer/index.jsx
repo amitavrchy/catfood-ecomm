@@ -28,23 +28,23 @@ export default function Footer() {
             <h3 className="font-semibold text-lg text-gray-200">কুইক লিংক</h3>
             <ul className="mt-2 space-y-2 text-sm text-gray-400">
               <li>
-                <Link href="/privacyPolicy" className="hover:text-primary transition">
-                  প্রাইভেসি পলিসি
+                <Link href="/privacyPolicy" passHref legacyBehavior className="hover:text-primary transition">
+                  <a target="_blank" rel="noopener noreferrer">প্রাইভেসি পলিসি</a>
                 </Link>
               </li>
               <li>
-                <Link href="/shipping-policy" className="hover:text-primary transition">
-                  শিপিং পলিসি
+                <Link href="/shipping-policy" passHref legacyBehavior className="hover:text-primary transition">
+                  <a target="_blank" rel="noopener noreferrer">শিপিং পলিসি</a>
                 </Link>
               </li>
               <li>
-                <Link href="/return-refund" className="hover:text-primary transition">
-                  রিটার্ন পলিসি
+                <Link href="/return-refund" passHref legacyBehavior className="hover:text-primary transition">
+                  <a target="_blank" rel="noopener noreferrer">রিটার্ন পলিসি</a>
                 </Link>
               </li>
               <li>
-                <Link href="/termsConditions" className="hover:text-primary transition">
-                  নিয়ম ও শর্তাদি
+                <Link href="/termsConditions" passHref legacyBehavior className="hover:text-primary transition">
+                  <a target="_blank" rel="noopener noreferrer">নিয়ম ও শর্তাদি</a>
                 </Link>
               </li>
             </ul>
@@ -60,6 +60,7 @@ export default function Footer() {
             <div className="flex space-x-4 mt-4 text-gray-400">
               <Link href="#" className=" flex  gap-1 hover:text-blue-500 transition">
                 <Facebook className="w-5 h-5" />
+                Facebook
               </Link>
             </div>
           </div>

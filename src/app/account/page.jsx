@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { signOut } from "next-auth/react";
 
 const AccountPage = () => {
     
@@ -40,12 +41,6 @@ const AccountPage = () => {
         notifications: true,
         darkMode: false,
     };
-
-    const handleLogout = () => {
-        alert("Logged out successfully!");
-        window.location.href = "/login";
-    };
-
     const renderContent = () => {
         switch (activeSection) {
             case "Profile":
@@ -146,7 +141,7 @@ const AccountPage = () => {
                             </li>
                         ))}
                         <li
-                            onClick={handleLogout}
+                            onClick={() => signOut({ callbackUrl: "/" })}
                             className="p-2 text-red-600 hover:bg-red-100 rounded-md cursor-pointer"
                         >
                             Logout
